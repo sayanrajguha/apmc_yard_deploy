@@ -1,6 +1,6 @@
 var express = require('express');
 var path = require('path');
-var cfenv = require('cfenv');
+// var cfenv = require('cfenv');
 // var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
@@ -11,8 +11,8 @@ var authAPI = require('./api/auth_api');
 // var users = require('./api/routes/users/users');
 var config = require('./config/config');
 var app = express();
-var appEnv = cfenv.getAppEnv();
-var port = appEnv.port,
+// var appEnv = cfenv.getAppEnv();
+var port = process.env.PORT || 3000,
 publicDir = '../Client/dist';
 
 // view engine setup
