@@ -30,7 +30,7 @@ app.use(express.static(publicDir));
 
 // app.use(passport.initialize());
 
-// mongoose.connect(config.mongoDbUrl);
+mongoose.connect(config.mongoDbUrl);
 
 // require('./config/passport')(passport);
 
