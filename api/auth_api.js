@@ -3,6 +3,7 @@ const loop = require('node-async-loop');
 const User = require('../models/user');
 const Shop = require('../models/shop');
 const ShopUserMap = require('../models/shop_user_map');
+const ShopSubscription = require('../models/shop_subscription');
 const config = require('../config/config');
 const router = express.Router();
 var response = {};
@@ -124,6 +125,26 @@ router.post('/registerUser',(req,res) => {
           }, () => {
               console.log('Looping Finished! Representative Mapping Complete');
               return;
+          });
+        })
+        .then(() => {
+          console.log('------'+new Date()+'------ APMC - Action - Promise execution. Adding shop subscription ------');
+          let shopSubscription = new ShopSubscription({
+            shop_id : data._id,
+            price : req.body.price,
+            startDate : new Date(),
+            endDate : new Date(new Date().setFullYear(new Date().getFullYear() + req.body.tenure)),
+            amountDue : 0
+          });
+          ShopSubscription.createShopSubscription(shopSubscription,(err,subscr) => {
+            if(err || !subscr) {
+              console.log('------'+new Date()+'------ APMC - API - registerShop - Error Occured or empty data ------');
+              console.log(err);
+              throw new Error(err);
+            } else {
+              console.log('------'+new Date()+'------ APMC - Action - Shop Subscription created with id # '+subscr._id+' ------');
+              return;
+            }
           });
         })
         .then(() => {

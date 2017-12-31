@@ -5,22 +5,27 @@ var config = require('../config/config');
 var Schema = mongoose.Schema;
 
 var ShopSubscriptionSchema = new Schema({
-  id : String,
   shop_id : String,
   price : String,
   startDate : String,
   endDate : String,
   amountDue : String,
-  history : {
+  history : [new Schema({
     date : String,
     amount : String,
     trans_id : String
-  }
+  },{_id : false})]
 });
 
 var ShopSubscription = module.exports = mongoose.model('ShopSubscription',ShopSubscriptionSchema);
 
 module.exports.createShopSubscription = function(newShopSubscription, callback) {
+  let transRecord = {
+    date : new Date(),
+    amount : newShopSubscription.price,
+    trans_id : mongoose.Types.ObjectId()
+  };
+  newShopSubscription.history = [transRecord];
   newShopSubscription.save(callback);
 }
 
