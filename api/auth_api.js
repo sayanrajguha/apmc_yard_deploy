@@ -223,4 +223,57 @@ router.post('/registerUser',(req,res) => {
     });
   });
 
+  router.post('/loginUser',(req,res) => {
+    console.log('------'+new Date()+'------ APMC - API invocation - loginUser ------------');
+    console.log('Data received : ');
+    console.log('%j',req.body.username);
+    console.log('%j',req.body.role);
+
+    User.getUserByUsername(req.body.username, (err,user) => {
+      if(err || !user || (user != undefined && req.body.role != user.role)) {
+        console.log('------'+new Date()+'------ APMC - loginUser - Error or user not found ------------');
+        response = {
+          "statusCode" : "401",
+          "action" : "loginUser",
+          "status" : "fail",
+          "message" : "Invalid Credentials"
+        };
+        return res.status(401).json(response);
+      }
+      console.log('------'+new Date()+'------ APMC - loginUser - user found ------------');
+      if(config.rolesAllowed != undefined && config.rolesAllowed.length > 1 && config.rolesAllowed.indexOf(user.role) != -1) {
+        User.comparePassword(req.body.password, user.password, (err,status) => {
+          if(err || !status) {
+            console.log('------'+new Date()+'------ APMC - loginUser - user password match fail ------------');
+            response = {
+              "statusCode" : "401",
+              "action" : "loginUser",
+              "status" : "fail",
+              "message" : "Invalid Credentials"
+            };
+            return res.status(401).json(response);
+          } else {
+            console.log('------'+new Date()+'------ APMC - loginUser - login success ------------');
+            response = {
+              "statusCode" : "200",
+              "action" : "loginUser",
+              "status" : "success",
+              "message" : "Login Success"
+            };
+            return res.status(200).json(response);
+          }
+        });
+      } else {
+          console.log('------'+new Date()+'------ APMC - loginUser - role not allowed ------------');
+          response = {
+            "statusCode" : "401",
+            "action" : "loginUser",
+            "status" : "deny",
+            "message" : "Access Denied"
+          };
+          return res.status(401).json(response);
+      }
+    });
+  });
+
   module.exports = router;
