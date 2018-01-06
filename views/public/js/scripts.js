@@ -1,6 +1,6 @@
 $(document).ready(function() {
 
-  $.get("http://localhost:3000/apmc/api/user/getUserSuggestions", function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUserSuggestions", function(data){
     $("#owner_id").typeahead({
       source:data,
       minLength : 0,
