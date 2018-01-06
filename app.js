@@ -10,6 +10,7 @@ var index = require('./api/index');
 var sync = require('./api/sync');
 var authAPI = require('./api/auth_api');
 var shopAPI = require('./api/shop_api');
+var userAPI = require('./api/user_api');
 // var users = require('./api/routes/users/users');
 var config = require('./config/config');
 var app = express();
@@ -40,6 +41,7 @@ app.use('/', index);
 app.use('/apmc/api', authAPI);
 app.use('/apmc/api/sync', sync);
 app.use('/apmc/api/shop', shopAPI);
+app.use('/apmc/api/user', userAPI);
 // app.use('/api/users', users);
 
 // app.use(function(request,response) {

@@ -258,9 +258,20 @@ router.post('/registerUser',(req,res) => {
               "statusCode" : "200",
               "action" : "loginUser",
               "status" : "success",
-              "message" : "Login Success"
+              "message" : "Login Success",
+              "shop_id" : "",
+              "role" : ""
             };
-            return res.status(200).json(response);
+            ShopUserMap.getShopByUser(user._id, (err,shopUserMap) => {
+              if(err || !shopUserMap) {
+                console.log('------'+new Date()+'------ APMC - loginUser - user shop map not found ------------');
+                return res.status(200).json(response);
+              } else {
+                response.shop_id = shopUserMap.shop_id;
+                response.role = user.role;
+                return res.status(200).json(response);
+              }
+            });
           }
         });
       } else {

@@ -12,7 +12,6 @@
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
-
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
   </head>
@@ -20,7 +19,7 @@
   <body>
     <header>
       <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-dark">
-        <a class="navbar-brand" href="#">Onboard Shop</a>
+        <a class="navbar-brand" href="#">APMC - Onboard Shop</a>
         <button class="navbar-toggler d-lg-none" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -85,13 +84,13 @@
                 <div class="form-group row">
                 <label for="owner_id" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Select Owner</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="text" id="owner_id" name="owner_id">
+                  <input class="form-control typeahead" autocomplete="off" type="text" id="owner_id" name="owner_id">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="representative_ids" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-form-label">Select Representatives</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="text" id="representative_ids" name="representative_ids">
+                  <input class="form-control" data-role="tagsinput" type="text" id="representative_ids" name="representative_ids">
                 </div>
                 </div>
                 <div class="form-group row text-center">
@@ -110,9 +109,10 @@
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script>window.jQuery || document.write('<script src="js/jquery-slim.min.js"><\/script>')</script>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap3-typeahead.min.js"></script>
+    <script src="js/scripts.js"></script>
   </body>
 </html>

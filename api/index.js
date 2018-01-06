@@ -19,12 +19,12 @@ var response = {};
     });
 
   router.get('/shopOnboard',(req,res) => {
-      console.log('------'+new Date()+'------ APMC - API invocation - dashboard --------------');
+      console.log('------'+new Date()+'------ APMC - API invocation - shopOnboard --------------');
       res.render('dashboard_shop_onboard.html');
     });
 
   router.get('/dashboardOwner',(req,res) => {
-      console.log('------'+new Date()+'------ APMC - API invocation - dashboard --------------');
+      console.log('------'+new Date()+'------ APMC - API invocation - dashboardOwner --------------');
       res.render('dashboard_owner.html');
     });
 
