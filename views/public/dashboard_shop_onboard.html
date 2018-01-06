@@ -12,6 +12,10 @@
 
     <!-- Bootstrap core CSS -->
     <link href="css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/bootstrap-tokenfield.min.css" rel="stylesheet">
+    <link href="css/tokenfield-typeahead.min.css" rel="stylesheet">
+    <link href="css/jquery-ui.min.css" rel="stylesheet">
+
     <!-- Custom styles for this template -->
     <link href="css/dashboard.css" rel="stylesheet">
   </head>
@@ -50,47 +54,47 @@
     <div class="container-fluid">
       <div class="row">
         <main role="main" class="col-sm-12 ml-sm-auto col-md-12 pt-3">
-            <div>
+            <form id="registerForm">
               <div class="form-group row">
                 <label for="shopName" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-form-label">Shop Name</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="text" name="name" placeholder="Enter shop name" id="shopName">
+                  <input class="form-control" type="text" autocomplete="off" name="name" placeholder="Enter shop name" id="shopName">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="address" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Address</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="search" name="address" placeholder="Enter shop address" id="address">
+                  <input class="form-control" type="search" name="address" autocomplete="off" placeholder="Enter shop address" id="address">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="contact" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Contact Number</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="text" name="contact" placeholder="Enter contact number"  id="contact">
+                  <input class="form-control" type="text" name="contact" autocomplete="off" placeholder="Enter contact number"  id="contact">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="price" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Subscription Amount</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="number" id="price" placeholder="Enter Subscription Amount" name="price">
+                  <input class="form-control" type="number" id="price" autocomplete="off" placeholder="Enter Subscription Amount" name="price">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="tenure" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Subscription Tenure (in years)</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" type="number" id="tenure" placeholder="Enter Subscription tenure in years" name="tenure">
+                  <input class="form-control" type="number" id="tenure" autocomplete="off" placeholder="Enter Subscription tenure in years" name="tenure">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="owner_id" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Select Owner</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control typeahead" autocomplete="off" type="text" id="owner_id" name="owner_id">
+                  <input class="form-control" type="text" id="owner_id" name="owner_id">
                 </div>
                 </div>
                 <div class="form-group row">
                 <label for="representative_ids" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-form-label">Select Representatives</label>
                 <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                  <input class="form-control" data-role="tagsinput" type="text" id="representative_ids" name="representative_ids">
+                  <input class="form-control" type="text" id="representative_ids" name="representative_ids">
                 </div>
                 </div>
                 <div class="form-group row text-center">
@@ -98,21 +102,42 @@
                     <button class="btn btn-block btn-success" type="submit">Save</button>
                   </div>
                   <div class="col-6">
-                    <button class="btn btn-block btn-danger" type="submit">Cancel</button>
+                    <button class="btn btn-block btn-danger">Cancel</button>
                   </div>
                 </div>
-            </div>
+            </form>
         </main>
       </div>
     </div>
-
+    <div class="modal" tabindex="-1" role="dialog" id="successModal">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Shop Added!</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <p>Shop added successfully..!</p>
+            <p>ID : <strong id="shopId"></strong></p>
+            <p><i>Please keep a record of the above id, you may need it during shop setup.</i></p>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          </div>
+        </div>
+      </div>
+    </div>
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="js/jquery-ui.min.js"></script>
+    <script src="js/jquery-migrate-3.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
-    <script src="js/bootstrap3-typeahead.min.js"></script>
+    <script src="js/bootstrap-tokenfield.min.js"></script>
     <script src="js/scripts.js"></script>
   </body>
 </html>

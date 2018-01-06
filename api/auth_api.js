@@ -57,12 +57,12 @@ router.post('/registerUser',(req,res) => {
     console.log('------'+new Date()+'------ APMC - API invocation - registerShop ------------');
     console.log('Data received : ');
     console.log('%j',req.body);
-
+    var representative_ids = req.body.representative_ids || req.body['representative_ids[]'];
     let newShopObj = new Shop({
         "name" : req.body.name,
         "address" : req.body.address,
         "owner_id" : req.body.owner_id,
-        "representative_ids" : req.body.representative_ids,
+        "representative_ids" : representative_ids,
         "contact" : req.body.contact
       });
     Shop.createShop(newShopObj, (err,data) => {
