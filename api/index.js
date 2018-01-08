@@ -28,4 +28,14 @@ var response = {};
       res.render('dashboard_owner.html');
     });
 
+  router.get('/manageShops',(req,res) => {
+      console.log('------'+new Date()+'------ APMC - API invocation - manageShops --------------');
+      res.render('dashboard_manage_shops.html');
+    });
+
+  router.get('/manageUsers',(req,res) => {
+      console.log('------'+new Date()+'------ APMC - API invocation - manageUsers --------------');
+      res.render('dashboard_manage_users.html');
+    });
+
   module.exports = router;

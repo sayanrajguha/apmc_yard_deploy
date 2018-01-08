@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-// var mongoosePaginate = require('mongoose-paginate');
+var mongoosePaginate = require('mongoose-paginate');
 var bcrypt = require('bcryptjs');
 var config = require('../config/config');
 var Schema = mongoose.Schema;
@@ -14,7 +14,7 @@ var UserSchema = new Schema({
   username : String,
   password : String
 });
-
+UserSchema.plugin(mongoosePaginate);
 var User = module.exports = mongoose.model('User',UserSchema);
 
 module.exports.createUser = function(newUser, callback) {
@@ -31,8 +31,21 @@ module.exports.getUserByEmail = function(email, callback) {
   var query = {email : email};
   User.findOne(query,callback);
 }
-module.exports.getAllUsers = function(callback) {
-  User.find({},callback);
+module.exports.getAllUsers = function(page,callback) {
+  if(callback) {
+    User.paginate({}, { page: page, limit: config.userPageLimit }, function(err, result) {
+      // result.docs
+      // result.total
+      // result.limit - 10
+      // result.page - 3
+      // result.pages
+      if(err) {
+        callback(err,undefined);
+      } else {
+        callback(undefined,result);
+      }
+    });
+  }
 }
 module.exports.getUserByUsername = function(username, callback) {
   var query = {username : username};

@@ -1,19 +1,27 @@
 $(document).ready(function() {
+  // Activate tooltip
+	$('[data-toggle="tooltip"]').tooltip();
 
-  // $.get("http://localhost:3000/apmc/api/user/getUserSuggestions", function(data){
-  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUserSuggestions", function(data){
-    $('#owner_id').autocomplete({
-      source : data,
-      minLength : 0
-    });
-    $('#representative_ids').tokenfield({
-      autocomplete: {
-        source: data,
-        delay: 100
-      },
-      showAutocompleteOnFocus: true
-    });
-  },'json');
+	// Select/Deselect checkboxes
+	var checkbox = $('table tbody input[type="checkbox"]');
+	$("#selectAll").click(function(){
+		if(this.checked){
+			checkbox.each(function(){
+				this.checked = true;
+			});
+		} else{
+			checkbox.each(function(){
+				this.checked = false;
+			});
+		}
+	});
+	checkbox.click(function(){
+		if(!this.checked){
+			$("#selectAll").prop("checked", false);
+		}
+	});
+
+
 
   $('#registerForm').submit(function(event) {
     event.preventDefault();
@@ -65,5 +73,86 @@ $(document).ready(function() {
             }
         });
   });
+
+  //AJAX Calls
+  // $.get("http://localhost:3000/apmc/api/user/getUserSuggestions", function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUserSuggestions", function(data){
+    $('#owner_id').autocomplete({
+      source : data,
+      minLength : 0
+    });
+    $('#representative_ids').tokenfield({
+      autocomplete: {
+        source: data,
+        delay: 100
+      },
+      showAutocompleteOnFocus: true
+    });
+  },'json');
+
+
+  // $.get("http://localhost:3000/apmc/api/shop/getAllShops/1", function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/shop/getAllShops/1", function(data){
+    if(data && data.statusCode == '200' && data.status == 'success' && data.shops) {
+      console.log('shops retreived...');
+      var shops = data.shops;
+      var table = $('#shopsTable tbody');
+      for(var i=0;i<shops.length;i++) {
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+shops[i]._id+'</td><td>'+ shops[i].name +'</td><td>'+ shops[i].address+'</td><td>'+ shops[i].contact +'</td><td>Owner : '+shops[i].owner_id+'<br>Representatives : '+shops[i].representative_ids.toString()+'</td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
+        table.append(row);
+      }
+      $('#currPage a').html(data.page);
+      $('#entries').html(data.entries);
+      $('#total').html(data.total);
+      $('#lastPage a').html(data.totalPages);
+      if(data.page == '1') {
+        $('#previous a').removeAttr('href').css('cursor','not-allowed');
+        $('#startingPage').addClass('invisible');
+      } else {
+        $('#previous a').attr('href','javascript:void(0)').css('cursor','pointer');;
+        $('#startingPage').removeClass('invisible');
+      }
+      if(data.page == data.totalPages) {
+        $('#next a').removeAttr('href').css('cursor','not-allowed');
+        $('#lastPage').addClass('invisible');
+      } else {
+        $('#next a').attr('href','javascript:void(0)').css('cursor','pointer');;
+        $('#lastPage').removeClass('invisible');
+      }
+    }
+  },'json');
+
+  // $.get("http://localhost:3000/apmc/api/user/getAllUsers/1", function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getAllUsers/1", function(data){
+    if(data && data.statusCode == '200' && data.status == 'success' && data.users) {
+      console.log('users retreived...');
+      var users = data.users;
+      var table = $('#usersTable tbody');
+      for(var i=0;i<users.length;i++) {
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td></td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
+        table.append(row);
+      }
+      $('#currPage_user a').html(data.page);
+      $('#entries_users').html(data.entries);
+      $('#total_users').html(data.total);
+      $('#lastPage_user a').html(data.totalPages);
+      if(data.page == '1') {
+        $('#previous a').removeAttr('href').css('cursor','not-allowed');
+        $('#startingPage_user').addClass('invisible');
+      } else {
+        $('#previous a').attr('href','javascript:void(0)').css('cursor','pointer');;
+        $('#startingPage_user').removeClass('invisible');
+      }
+      if(data.page == data.totalPages) {
+        $('#next').addClass('disabled');
+        $('#next a').removeAttr('href').css('cursor','not-allowed');
+        $('#lastPage_user').addClass('invisible');
+      } else {
+        $('#next').removeClass('disabled');
+        $('#next a').attr('href','javascript:void(0)').css('cursor','pointer');;
+        $('#lastPage_user').removeClass('invisible');
+      }
+    }
+  },'json');
 
 });
