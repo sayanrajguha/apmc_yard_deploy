@@ -98,7 +98,11 @@ $(document).ready(function() {
       var shops = data.shops;
       var table = $('#shopsTable tbody');
       for(var i=0;i<shops.length;i++) {
-        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+shops[i]._id+'</td><td>'+ shops[i].name +'</td><td>'+ shops[i].address+'</td><td>'+ shops[i].contact +'</td><td>Owner : '+shops[i].owner_id+'<br>Representatives : '+shops[i].representative_ids.toString()+'</td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
+        var repIdString = '';
+        for(var j=0;j<shops[i].representative_ids.length;j++) {
+          repIdString = repIdString + '<br />' + shops[i].representative_ids[j];
+        }
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+shops[i]._id+'</td><td>'+ shops[i].name +'</td><td>'+ shops[i].address+'</td><td>'+ shops[i].contact +'</td><td><strong>Owner</strong> :<br />'+shops[i].owner_id+'<br /><strong>Representatives</strong> : '+repIdString+'</td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
         table.append(row);
       }
       $('#currPage a').html(data.page);
@@ -129,7 +133,7 @@ $(document).ready(function() {
       var users = data.users;
       var table = $('#usersTable tbody');
       for(var i=0;i<users.length;i++) {
-        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td></td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" id="checkbox'+(i+1)+'" name="options[]" value="1"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td>'+ users[i].shopDetails +'</td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a><a href="#deleteEmployeeModal" class="delete" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Delete">&#xE872;</i></a></td></tr>';
         table.append(row);
       }
       $('#currPage_user a').html(data.page);
@@ -154,5 +158,4 @@ $(document).ready(function() {
       }
     }
   },'json');
-
 });

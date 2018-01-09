@@ -1,5 +1,7 @@
 const express = require('express');
+const loop = require('node-async-loop');
 const Shop = require('../models/shop');
+const User = require('../models/user');
 const ShopUserMap = require('../models/shop_user_map');
 const ShopSubscription = require('../models/shop_subscription');
 const config = require('../config/config');
@@ -28,6 +30,7 @@ router.get('/getAllShops/:pageNo',(req,res) => {
         // shops.limit - 10
         // shops.page - 3
         // shops.pages
+
         response = {
           "statusCode" : "200",
           "action" : "getAllShops",
@@ -38,7 +41,41 @@ router.get('/getAllShops/:pageNo',(req,res) => {
           "page" : shops.page,
           "totalPages" : shops.pages
         };
-        return res.status(200).json(response);
+        let shopList = [];
+        loop(shops.docs, (shop, nextShop) => {
+            User.getUserById(shop.owner_id,(err,user) => {
+              if(!err && user) {
+                let ownerString = user.name + ' - '+ user.address + ' - ' + user._id;
+                shop.owner_id = ownerString;
+                // shopList.push(shop);
+              }
+              let repIds = [];
+              loop(shop.representative_ids, (rep_id,nextRep) => {
+                if(rep_id && rep_id.trim() != '') {
+                  User.getUserById(rep_id,(err,user) => {
+                    if(!err && user) {
+                      let repString = user.name + ' - '+ user.address + ' - ' + user._id;
+                      repIds.push(repString);
+                      nextRep();
+                    } else {
+                      nextRep();
+                    }
+                  });
+                } else {
+                  nextRep();
+                }
+              }, (err) => {
+                console.log('Finished looping through rep ids');
+                shop.representative_ids = repIds;
+                shopList.push(shop);
+                nextShop();
+              });
+            });
+        }, (err) => {
+          console.log('Finished looping through shops!');
+          response.shops = shopList;
+          return res.status(200).json(response);
+        });
       }
     });
   });
