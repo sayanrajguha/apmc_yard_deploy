@@ -96,15 +96,15 @@
                 </tbody>
               </table>
              <div class="clearfix">
-                  <div class="hint-text">Showing <b id="entries_users"></b> out of <b id="total_users"></b> entries</div>
+                  <div class="hint-text">Showing <b id="entries_users"></b> out of <b id="total_users"></b> users</div>
                   <ul class="pagination">
-                      <li class="page-item" id="startingPage_user"><a href="#" class="page-link"></a></li>
-                      <li class="page-item"  id="previous"><a href="#">Previous</a></li>
-                      <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
-                      <li class="page-item active" id="currPage_user"><a href="#" class="page-link"></a></li>
-                      <li class="page-item disabled"><a href="#" class="page-link">...</a></li>
-                      <li class="page-item" id="next"><a href="#" class="page-link">Next</a></li>
-                      <li class="page-item" id="lastPage_user"><a href="#" class="page-link"></a></li>
+                      <!-- <li class="page-item" id="startingPage_user"><a href="#" class="page-link"></a></li> -->
+                      <li class="page-item"  id="previous"><a href="javascript:void(0)" id="prevBtn">Previous</a></li>
+                      <!-- <li class="page-item disabled"><a href="#" class="page-link">...</a></li> -->
+                      <li class="page-item active" id="currPage_user"><a href="javascript:void(0)" class="page-link"></a></li>
+                      <!-- <li class="page-item disabled"><a href="#" class="page-link">...</a></li> -->
+                      <li class="page-item" id="next"><a href="javascript:void(0)" id="nxtBtn" class="page-link">Next</a></li>
+                      <!-- <li class="page-item" id="lastPage_user"><a href="#" class="page-link"></a></li> -->
                   </ul>
               </div>
           </div>
@@ -212,5 +212,6 @@
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-tokenfield.min.js"></script>
     <script src="js/scripts.js"></script>
+    <script src="js/usersOnLoad.js"></script>
   </body>
 </html>

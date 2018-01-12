@@ -47,39 +47,41 @@ router.get('/getUserSuggestions',(req,res) => {
         } else {
           let userList = [];
           loop(users.docs, (userObj,nextUser)=> {
-            if(userObj == null || userObj == undefined || !userObj) {
+            console.log(userObj);
+            if(userObj != null && userObj != undefined) {
+              let user = {
+                'id' : userObj._id,
+                'name' : userObj.name,
+                'address' : userObj.address,
+                'contact' : userObj.contact,
+                'email' : userObj.email,
+                'role' : userObj.role,
+                'username' : userObj.username,
+                'shopId' : '',
+                'shopDetails' : ''
+              };
+              ShopUserMap.getShopByUser(user.id,(err,map) => {
+                if(!err && map) {
+                  Shop.getShop(map.shop_id,(err,shop) => {
+                    if(!err && shop) {
+                      user.shopId = shop._id;
+                      let shopString = shop.name + ' - ' + shop.address + ' - ' + shop.contact;
+                      user.shopDetails = shopString;
+                      userList.push(user);
+                      nextUser();
+                    } else {
+                      userList.push(user);
+                      nextUser();
+                    }
+                  });
+                } else {
+                    userList.push(user);
+                    nextUser();
+                }
+              });
+            } else {
               nextUser();
             }
-            let user = {
-              'id' : userObj._id,
-              'name' : userObj.name,
-              'address' : userObj.address,
-              'contact' : userObj.contact,
-              'email' : userObj.email,
-              'role' : userObj.role,
-              'username' : userObj.username,
-              'shopId' : '',
-              'shopDetails' : ''
-            };
-            ShopUserMap.getShopByUser(user.id,(err,map) => {
-              if(!err && map) {
-                Shop.getShop(map.shop_id,(err,shop) => {
-                  if(!err && shop) {
-                    user.shopId = shop._id;
-                    let shopString = shop.name + ' - ' + shop.address + ' - ' + shop.contact;
-                    user.shopDetails = shopString;
-                    userList.push(user);
-                    nextUser();
-                  } else {
-                    userList.push(user);
-                    nextUser();
-                  }
-                });
-              } else {
-                  userList.push(user);
-                  nextUser();
-              }
-            });
           }, (err) => {
             console.log('Finished looping through users');
             let response = {

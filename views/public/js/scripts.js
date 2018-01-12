@@ -21,8 +21,6 @@ $(document).ready(function() {
 		}
 	});
 
-
-
   $('#registerForm').submit(function(event) {
     event.preventDefault();
     var owner_id = $('#owner_id').val();
@@ -73,8 +71,11 @@ $(document).ready(function() {
             }
         });
   });
+});
 
-  //AJAX Calls
+
+//Global functions providing AJAX Calls
+function getUserSuggestions() {
   // $.get("http://localhost:3000/apmc/api/user/getUserSuggestions", function(data){
   $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUserSuggestions", function(data){
     $('#owner_id').autocomplete({
@@ -89,10 +90,12 @@ $(document).ready(function() {
       showAutocompleteOnFocus: true
     });
   },'json');
+}
 
-
-  // $.get("http://localhost:3000/apmc/api/shop/getAllShops/1", function(data){
-  $.get("https://apmc-yard.herokuapp.com/apmc/api/shop/getAllShops/1", function(data){
+function getAllShops(pageNo) {
+  $('#shopsTable tbody').empty();
+  // $.get("http://localhost:3000/apmc/api/shop/getAllShops/"+pageNo, function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/shop/getAllShops/"+pageNo, function(data){
     if(data && data.statusCode == '200' && data.status == 'success' && data.shops) {
       console.log('shops retreived...');
       var shops = data.shops;
@@ -125,10 +128,14 @@ $(document).ready(function() {
       }
     }
   },'json');
+}
 
-  // $.get("http://localhost:3000/apmc/api/user/getAllUsers/1", function(data){
-  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getAllUsers/1", function(data){
-    if(data && data.statusCode == '200' && data.status == 'success' && data.users) {
+function getAllUsers(pageNo) {
+  console.log('getAllUsers called');
+  $('#usersTable tbody').empty();
+  // $.get("http://localhost:3000/apmc/api/user/getAllUsers/"+pageNo, function(data){
+  $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getAllUsers/"+pageNo, function(data){
+    if(data && data.statusCode == '200' && data.status == 'success' && data.users && data.users.length > 0) {
       console.log('users retreived...');
       var users = data.users;
       var table = $('#usersTable tbody');
@@ -158,4 +165,4 @@ $(document).ready(function() {
       }
     }
   },'json');
-});
+}
