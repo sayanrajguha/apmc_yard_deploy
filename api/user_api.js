@@ -47,6 +47,9 @@ router.get('/getUserSuggestions',(req,res) => {
         } else {
           let userList = [];
           loop(users.docs, (userObj,nextUser)=> {
+            if(userObj == null || userObj == undefined || !userObj) {
+              nextUser();
+            }
             let user = {
               'id' : userObj._id,
               'name' : userObj.name,
