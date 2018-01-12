@@ -14,7 +14,7 @@ router.use(function(req,res,next) {
 
 router.get('/getUserSuggestions',(req,res) => {
     console.log('------'+new Date()+'------ APMC - API invocation - getUserSuggestions --------------');
-    User.getAllUsers((err,users) => {
+    User.getAllUsers(-1,(err,users) => {
       if(err || !users) {
         console.log('------'+new Date()+'------ APMC - Error - getUserSuggestions --------------');
         console.log(err);

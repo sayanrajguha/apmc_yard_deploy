@@ -32,7 +32,7 @@ module.exports.getUserByEmail = function(email, callback) {
   User.findOne(query,callback);
 }
 module.exports.getAllUsers = function(page,callback) {
-  if(callback) {
+  if(page && callback && page != -1) {
     User.paginate({}, { page: page, limit: config.userPageLimit }, function(err, result) {
       // result.docs
       // result.total
@@ -45,6 +45,19 @@ module.exports.getAllUsers = function(page,callback) {
         callback(undefined,result);
       }
     });
+  } else if(page && callback && page == -1) {
+      User.find({}, function(err, result) {
+        // result.docs
+        // result.total
+        // result.limit - 10
+        // result.page - 3
+        // result.pages
+        if(err) {
+          callback(err,undefined);
+        } else {
+          callback(undefined,result);
+        }
+      });
   }
 }
 module.exports.getUserByUsername = function(username, callback) {

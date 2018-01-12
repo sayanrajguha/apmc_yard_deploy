@@ -76,8 +76,10 @@ $(document).ready(function() {
 
 //Global functions providing AJAX Calls
 function getUserSuggestions() {
+  console.log('user suggestions called...');
   // $.get("http://localhost:3000/apmc/api/user/getUserSuggestions", function(data){
   $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUserSuggestions", function(data){
+    console.log('user suggestions retreived');
     $('#owner_id').autocomplete({
       source : data,
       minLength : 0
@@ -94,6 +96,7 @@ function getUserSuggestions() {
 
 function getAllShops(pageNo) {
   $('#shopsTable tbody').empty();
+  $('#pleaseWaitDialog').modal('show');
   // $.get("http://localhost:3000/apmc/api/shop/getAllShops/"+pageNo, function(data){
   $.get("https://apmc-yard.herokuapp.com/apmc/api/shop/getAllShops/"+pageNo, function(data){
     if(data && data.statusCode == '200' && data.status == 'success' && data.shops) {
@@ -127,12 +130,14 @@ function getAllShops(pageNo) {
         $('#lastPage').removeClass('invisible');
       }
     }
+    $('#pleaseWaitDialog').modal('hide');
   },'json');
 }
 
 function getAllUsers(pageNo) {
   console.log('getAllUsers called');
   $('#usersTable tbody').empty();
+  $('#pleaseWaitDialog').modal('show');
   // $.get("http://localhost:3000/apmc/api/user/getAllUsers/"+pageNo, function(data){
   $.get("https://apmc-yard.herokuapp.com/apmc/api/user/getAllUsers/"+pageNo, function(data){
     if(data && data.statusCode == '200' && data.status == 'success' && data.users && data.users.length > 0) {
@@ -164,5 +169,6 @@ function getAllUsers(pageNo) {
         $('#lastPage_user').removeClass('invisible');
       }
     }
+    $('#pleaseWaitDialog').modal('hide');
   },'json');
 }

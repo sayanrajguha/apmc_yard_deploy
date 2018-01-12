@@ -4,6 +4,9 @@ background: #f5f5f5;
 font-family: 'Varela Round', sans-serif;
 font-size: 13px;
 }
+.ui-front {
+  z-index: 1100;
+}
 .table-wrapper {
     background: #fff;
     padding: 20px 25px;
@@ -216,4 +219,9 @@ min-width: 100px;
 }
 .modal form label {
 font-weight: normal;
+}
+.addModal {
+  width: 800px;
+  margin: auto;
+  margin-top : 20px;
 }

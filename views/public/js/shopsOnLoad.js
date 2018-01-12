@@ -1,6 +1,6 @@
 $(document).ready(function() {
   getAllShops(1);
-
+  getUserSuggestions();
   $("#prevBtn").click(function(event){
     event.preventDefault();
     console.log('prev clicked.');
