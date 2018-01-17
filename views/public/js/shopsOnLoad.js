@@ -21,4 +21,8 @@ $(document).ready(function() {
       getAllShops(Number(currPage)+1);
     }
   });
+
+  $('#successModal').on('hidden.bs.modal', function(event){
+		getAllShops(1);
+	});
 });
