@@ -29,28 +29,30 @@ module.exports.createShopSubscription = function(newShopSubscription, callback) 
   newShopSubscription.save(callback);
 }
 
-module.exports.updateShopSubscription = function(id,newShopSubscription,callback) {
-  ShopSubscription.findOneAndUpdate({_id : id}, function(err,shopSubscription) {
-    if(err) throw err;
-    if(!shopSubscription) {
+module.exports.updateShopSubscription = function(id,newShopSubscription,tenure,callback) {
+  ShopSubscription.findOne({shop_id : id}, function(err,shopSubscription) {
+    if(err) {
+      callback(err,null);
+    } else if(!shopSubscription) {
       callback(null,false);
+    } else {
+      console.log('shop subscription found');
+      // callback(null,true);
+      shopSubscription.price = newShopSubscription.price;
+      let startDate = new Date(shopSubscription.startDate);
+      let endDate = new Date(shopSubscription.startDate);
+      endDate = new Date(endDate.setFullYear(endDate.getFullYear() + Number(tenure)));
+      console.log(endDate);
+      shopSubscription.endDate = endDate;
+      shopSubscription.save(callback);
     }
-    console.log('found and updated');
-    callback(null,true);
-    // shop.name = newShop.name;
-    // shop.address = newShop.address;
-    // shop.owner_id = newUser.owner_id;
-    // shop.rep_ids = newUser.rep_ids;
-    // shop.contact = newUser.contact;
-    //
-    // shop.save(callback);
   });
 }
 
 module.exports.deleteShopSubscription = function(id,callback) {
-  ShopSubscription.remove({ _id: id },callback);
+  ShopSubscription.remove({ shop_id : id },callback);
 }
 
 module.exports.getShopSubscription = function(id,callback) {
-  ShopSubscription.findOne({ _id: id },callback);
+  ShopSubscription.findOne({ shop_id : id },callback);
 }

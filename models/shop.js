@@ -5,7 +5,6 @@ var config = require('../config/config');
 var Schema = mongoose.Schema;
 
 var ShopSchema = new Schema({
-  id : String,
   name : String,
   address : String,
   owner_id : String,
@@ -20,20 +19,14 @@ module.exports.createShop = function(newShop, callback) {
 }
 
 module.exports.updateShop = function(id,newShop,callback) {
-  Shop.findOneAndUpdate({_id : id}, function(err,shop) {
-    if(err) throw err;
-    if(!shop) {
-      callback(null,false);
+  Shop.findOneAndUpdate({_id : id}, newShop, function(err,shop) {
+    if(err) {
+      return callback(err,null);
+    } else if(!shop) {
+      return callback(null,false);
     }
     console.log('shop with shop name : ' + shop.name + ' found and updated');
-    callback(null,true);
-    // shop.name = newShop.name;
-    // shop.address = newShop.address;
-    // shop.owner_id = newUser.owner_id;
-    // shop.rep_ids = newUser.rep_ids;
-    // shop.contact = newUser.contact;
-    //
-    // shop.save(callback);
+    return callback(null,true);
   });
 }
 
@@ -47,7 +40,7 @@ module.exports.getShop = function(id,callback) {
 
 module.exports.getAllShops = function(page,callback) {
   // Shop.find({},callback);
-  Shop.paginate({}, { page: page, limit: config.shopPageLimit }, function(err, result) {
+  Shop.paginate({}, { sort : {_id : -1}, page: page, limit: config.shopPageLimit }, function(err, result) {
     // result.docs
     // result.total
     // result.limit - 10

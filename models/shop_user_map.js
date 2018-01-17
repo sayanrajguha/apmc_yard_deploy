@@ -16,22 +16,19 @@ module.exports.createShopUserMap = function(newShopUserMap, callback) {
 }
 
 module.exports.updateShopUserMap = function(id,newShopUserMap,callback) {
-  Shop.findOneAndUpdate({_id : id}, function(err,shopUserMap) {
-    if(err) throw err;
-    if(!shopUserMap) {
-      callback(null,false);
+  Shop.findOneAndUpdate({shop_id : id}, newShopUserMap, function(err,shopUserMap) {
+    if(err) {
+      return callback(err,null);
+    } else if(!shopUserMap) {
+      return callback(null,false);
     }
     console.log('found and updated');
-    callback(null,true);
-    // shopUserMap.shop_id = newShopUserMap.shop_id;
-    // shopUserMap.user_id = newShopUserMap.user_id;
-    //
-    // shopUserMap.save(callback);
+    return callback(null,true);
   });
 }
 
 module.exports.deleteShopUserMap = function(id,callback) {
-  ShopUser.remove({ _id: id },callback);
+  ShopUser.remove({ shop_id: id },callback);
 }
 
 module.exports.getShopUserMap = function(id,callback) {

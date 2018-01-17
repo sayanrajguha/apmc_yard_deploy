@@ -133,7 +133,7 @@ router.post('/registerUser',(req,res) => {
             shop_id : data._id,
             price : req.body.price,
             startDate : new Date(),
-            endDate : new Date(new Date().setFullYear(new Date().getFullYear() + req.body.tenure)),
+            endDate : new Date(new Date().setFullYear(new Date().getFullYear() + Number(req.body.tenure))),
             amountDue : 0
           });
           ShopSubscription.createShopSubscription(shopSubscription,(err,subscr) => {

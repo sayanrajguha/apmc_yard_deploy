@@ -16,10 +16,9 @@ $(document).ready(function() {
     console.log('next clicked.');
     var currPage = $('#currPage a').text();
     console.log('currPage : '+currPage);
-    if(currPage >= 1) {
+    console.log($('#totalPages').val());
+    if(currPage >= 1 && currPage != $('#totalPages').val()) {
       getAllShops(Number(currPage)+1);
     }
   });
-
-
 });
