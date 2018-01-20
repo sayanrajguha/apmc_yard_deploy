@@ -32,7 +32,7 @@ module.exports.deleteShopUserMap = function(id,callback) {
 }
 
 module.exports.getShopUserMap = function(id,callback) {
-  ShopUser.findOne({ _id: id },callback);
+  ShopUser.find({ shop_id : id },callback);
 }
 
 module.exports.getShopByUser = function(user_id,callback) {

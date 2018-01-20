@@ -12,11 +12,29 @@ $(document).ready(function() {
 		}
 	});
 
+	$("#usersTable #selectAll").click(function(e){
+		console.log('clicked');
+		if($('#usersTable #selectAll').is(':checked')){
+			console.log('here');
+			$('#usersTable .tableCheckBox').prop('checked',true);
+		} else{
+			$('#usersTable .tableCheckBox').prop('checked',false);
+		}
+	});
+
 	$('#shopsTable').on('click','input[type="checkbox"]:not("#selectAll")',function(e){
 		console.log('others clicked');
 		if(!$('#'+$(this).prop('id')).is(':checked')) {
 			console.log('yeah');
 			$('#shopsTable input:checkbox[id="selectAll"]').prop('checked',false);
+		}
+	});
+
+	$('#usersTable').on('click','input[type="checkbox"]:not("#selectAll")',function(e){
+		console.log('others clicked');
+		if(!$('#'+$(this).prop('id')).is(':checked')) {
+			console.log('yeah');
+			$('#usersTable input:checkbox[id="selectAll"]').prop('checked',false);
 		}
 	});
 
@@ -282,9 +300,10 @@ function getAllUsers(pageNo) {
     if(data && data.statusCode == '200' && data.status == 'success' && data.users && data.users.length > 0) {
       console.log('users retreived...');
       var users = data.users;
+			console.log(users);
       var table = $('#usersTable tbody');
       for(var i=0;i<users.length;i++) {
-        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" class="tableCheckBox" id="checkbox'+(i+1)+'" name="options[]" value="'+ users[i]._id +'"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td>'+ users[i].shopDetails +'</td><td><a href="#editEmployeeModal" class="edit" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></td></tr>';
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" class="tableCheckBox" id="checkbox'+(i+1)+'" name="options[]" value="'+ users[i].id +'"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td>'+ users[i].shopDetails +'</td><td><a href="javascript:void(0)" class="editUser" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></td></tr>';
         table.append(row);
       }
       $('#currPage_user a').html(data.page);

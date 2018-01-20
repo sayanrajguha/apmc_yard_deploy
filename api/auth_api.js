@@ -287,4 +287,96 @@ router.post('/registerUser',(req,res) => {
     });
   });
 
+  router.post('/initShop',(req,res) => {
+    console.log('------'+new Date()+'------ APMC - API invocation - initShop ------------');
+    console.log('Data received : ');
+    console.log('%j',req.body.username);
+    console.log('%j',req.body.role);
+
+    User.getUserByUsername(req.body.username, (err,user) => {
+      if(err || !user || (user != undefined && req.body.role != user.role)) {
+        console.log('------'+new Date()+'------ APMC - initShop - Error or user not found ------------');
+        response = {
+          "statusCode" : "401",
+          "action" : "initShop",
+          "status" : "fail",
+          "message" : "Invalid Credentials"
+        };
+        return res.status(401).json(response);
+      }
+      console.log('------'+new Date()+'------ APMC - initShop - user found ------------');
+      if(config.rolesAllowed != undefined && config.rolesAllowed.length > 1 && config.rolesAllowed.indexOf(user.role) != -1) {
+        User.comparePassword(req.body.password, user.password, (err,status) => {
+          if(err || !status) {
+            console.log('------'+new Date()+'------ APMC - initShop - user password match fail ------------');
+            response = {
+              "statusCode" : "401",
+              "action" : "initShop",
+              "status" : "fail",
+              "message" : "Invalid Credentials"
+            };
+            return res.status(401).json(response);
+          } else {
+            console.log('------'+new Date()+'------ APMC - initShop - login success ------------');
+            response = {
+              "statusCode" : "200",
+              "action" : "initShop",
+              "status" : "success",
+              "message" : "Login Success",
+              "shop_id" : "",
+              "role" : "",
+              "users" : []
+            };
+            ShopUserMap.getShopByUser(user._id, (err,shopUserMap) => {
+              if(err || !shopUserMap) {
+                console.log('------'+new Date()+'------ APMC - initShop - user shop map not found ------------');
+                return res.status(200).json(response);
+              } else {
+                response.shop_id = shopUserMap.shop_id;
+                response.role = user.role;
+                ShopUserMap.getShopUserMap(response.shop_id,(err,maps) => {
+                  if(maps && maps.length >= 1) {
+                    let users = [];
+
+                    loop(maps,(map,next) => {
+                      let userObj = {
+                        "id" : "",
+                        "username" : "",
+                        "password" : "",
+                        "role" : ""
+                      };
+                      User.getUserById(map.user_id,(err,user) => {
+                        if(user) {
+                          userObj.id = user._id;
+                          userObj.username = user.username;
+                          userObj.password = user.password;
+                          userObj.role = user.role;
+                          users.push(userObj);
+                        };
+                        next();
+                      });
+                    },(err) => {
+                      console.log('Finished looping through mapped users');
+                      response.users = users;
+                      return res.status(200).json(response);
+                    });
+                  }
+                });
+              }
+            });
+          }
+        });
+      } else {
+          console.log('------'+new Date()+'------ APMC - initShop - role not allowed ------------');
+          response = {
+            "statusCode" : "401",
+            "action" : "loginUser",
+            "status" : "deny",
+            "message" : "Access Denied"
+          };
+          return res.status(401).json(response);
+      }
+    });
+  });
+
   module.exports = router;

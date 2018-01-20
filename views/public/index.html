@@ -33,9 +33,13 @@
           <input type="password" id="password" class="form-control" placeholder="Password" required>
         </div>
         <div class="form-group">
-          <div class="radio">
-            <label class="radio-inline"><input type="radio" name="optradio">Executive Admin</label>
-            <label class="radio-inline"><input type="radio" name="optradio">Shop Owner</label>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="role" id="role1" value="admin">
+            <label class="form-check-label" for="role1">Executive Admin</label>
+          </div>
+          <div class="form-check form-check-inline">
+            <input class="form-check-input" type="radio" name="role" id="role2" value="owner">
+            <label class="form-check-label" for="role2">Shop Owner</label>
           </div>
         </div>
         <button class="btn btn-lg btn-primary btn-block" type="submit">Log in</button>
