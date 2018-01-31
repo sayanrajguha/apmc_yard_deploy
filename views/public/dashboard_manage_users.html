@@ -152,25 +152,30 @@
                           <input class="form-control" type="text" id="username" autocomplete="off" placeholder="Enter unique username" name="username">
                         </div>
                         </div>
-                        <div class="form-group row">
+                        <div class="form-group row" id="passwordRow">
                         <label for="password" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Password</label>
                         <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                          <input class="form-control" type="password" id="password" name="password">
+                          <div class="input-group">
+                            <input class="form-control" type="password" id="password" name="password">
+                            <div class="input-group-append">
+                              <button class="btn" type="button" id="showPassBtn"><i class="fa fa-eye-slash"  id="showPass" aria-hidden="true"></i></button>
+                            </div>
+                          </div>
                         </div>
                         </div>
                         <div class="form-group row">
                           <label for="role" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Select Role</label>
                           <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
                             <select class="form-control" id="role">
-                              <option>Admin</option>
-                              <option>Owner</option>
-                              <option>Representative</option>
+                              <option value="admin">Admin</option>
+                              <option value="owner">Owner</option>
+                              <option value="rep">Representative</option>
                             </select>
                           </div>
                         </div>
                         <div class="form-group row">
                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <button type="button" id="saveNewUserpBtn" class="btn btn-primary form-control">Save changes</button>
+                            <button type="button" id="saveNewUserBtn" class="btn btn-primary form-control">Save changes</button>
                           </div>
                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <button type="button" class="btn btn-danger form-control" data-dismiss="modal">Close</button>
@@ -226,8 +231,8 @@
           </div>
           <div class="modal-body">
             <p>User <span id="action">saved</span> successfully..!</p>
-            <p id="textID">ID : <strong id="userId"></strong></p>
-            <p id="textInfo"><i>Please keep a record of the above id, you'll need it during login.</i></p>
+            <p id="textID">username : <strong id="userId"></strong></p>
+            <p id="textInfo"><i>Please keep a record of the above, you'll need it during login.</i></p>
           </div>
           <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>

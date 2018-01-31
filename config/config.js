@@ -3,7 +3,7 @@ var config = {
   mongoDbUrl : 'mongodb://apmc_admin:admin@ds133547.mlab.com:33547/apmcyard_db',
   rolesAllowed : ['admin','owner'],
   shopPageLimit : 4,
-  userPageLimit : 2
+  userPageLimit : 10
 };
 
 module.exports = config;

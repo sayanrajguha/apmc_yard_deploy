@@ -40,6 +40,8 @@ router.post('/registerUser',(req,res) => {
         };
         return res.status(500).json(response);
       } else {
+        console.log('------'+new Date()+'------ APMC - API - registerUser - user registered successfully ------');
+        console.log(data);
         response = {
           "statusCode" : "200",
           "action" : "register",

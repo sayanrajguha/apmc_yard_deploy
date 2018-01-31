@@ -1,4 +1,5 @@
 const express = require('express');
+const loop = require('node-async-loop');
 const config = require('../config/config');
 const router = express.Router();
 var response = {};
@@ -10,37 +11,107 @@ router.use(function(req,res,next) {
 
   router.post('/party', (req,res) => {
     console.log('------'+new Date()+'------ APMC - API invocation - sync Party --------------');
-    res.status(200).end('Sync User API called...');
+    let partyList = req.body.list;
+    if(!partyList || partyList.length < 1) {
+
+    } else {
+      loop(partyList, (party,next) => {
+
+      }, (err) => {
+
+      });
+    }
+    res.status(200).end('Sync Party API called...');
   });
 
   router.post('/item', (req,res) => {
       console.log('------'+new Date()+'------ APMC - API invocation - sync Item --------------');
-      res.status(200).end('Sync User API called...');
+      let itemList = req.body.list;
+      if(!itemList || itemList.length < 1) {
+
+      } else {
+        loop(itemList, (item,next) => {
+
+        }, (err) => {
+
+        });
+      }
+      res.status(200).end('Sync Item API called...');
   });
 
   router.post('/stock', (req,res) => {
         console.log('------'+new Date()+'------ APMC - API invocation - sync Stock --------------');
-        res.status(200).end('Sync User API called...');
+        let stockList = req.body.list;
+        if(!stockList || stockList.length < 1) {
+
+        } else {
+          loop(stockList, (stock,next) => {
+
+          }, (err) => {
+
+          });
+        }
+        res.status(200).end('Sync Stock API called...');
   });
 
   router.post('/freight', (req,res) => {
           console.log('------'+new Date()+'------ APMC - API invocation - sync freight --------------');
-          res.status(200).end('Sync User API called...');
+          let freightList = req.body.list;
+          if(!freightList || freightList.length < 1) {
+
+          } else {
+            loop(freightList, (friehgt,next) => {
+
+            }, (err) => {
+
+            });
+          }
+          res.status(200).end('Sync Freight API called...');
   });
 
   router.post('/sale', (req,res) => {
       console.log('------'+new Date()+'------ APMC - API invocation - sync Sale --------------');
-      res.status(200).end('Sync User API called...');
+      let saleList = req.body.list;
+      if(!saleList || saleList.length < 1) {
+
+      } else {
+        loop(saleList, (sale,next) => {
+
+        }, (err) => {
+
+        });
+      }
+      res.status(200).end('Sync Sale API called...');
   });
 
   router.post('/customer', (req,res) => {
       console.log('------'+new Date()+'------ APMC - API invocation - sync Customer --------------');
-      res.status(200).end('Sync User API called...');
+      let customerList = req.body.list;
+      if(!customerList || customerList.length < 1) {
+
+      } else {
+        loop(customerList, (customer,next) => {
+
+        }, (err) => {
+
+        });
+      }
+      res.status(200).end('Sync Customer API called...');
   });
 
   router.post('/patti', (req,res) => {
       console.log('------'+new Date()+'------ APMC - API invocation - sync Patti --------------');
-      res.status(200).end('Sync User API called...');
+      let pattiList = req.body.list;
+      if(!pattiList || pattiList.length < 1) {
+
+      } else {
+        loop(pattiList, (patti,next) => {
+
+        }, (err) => {
+
+        });
+      }
+      res.status(200).end('Sync Patti API called...');
   });
 
   module.exports = router;

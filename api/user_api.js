@@ -1,4 +1,5 @@
 const express = require('express');
+const mongoose = require('mongoose');
 const loop = require('node-async-loop');
 const User = require('../models/user');
 const Shop = require('../models/shop');
@@ -100,15 +101,15 @@ router.get('/getUserSuggestions',(req,res) => {
       });
     });
 
-    router.get('/getUserDetails/:userId',(req,res) => {
-      console.log('------'+new Date()+'------ APMC - Error -getUserDetails --------------');
+    router.get('/getUser/:userId',(req,res) => {
+      console.log('------'+new Date()+'------ APMC - API invocation -getUser --------------');
       User.getUserById(req.params.userId, (err,user) => {
         if(err || !user) {
-          console.log('------'+new Date()+'------ APMC - Error - getUserDetails --------------');
+          console.log('------'+new Date()+'------ APMC - Error - getUser --------------');
           console.log(err);
           let response = {
             "statusCode" : "500",
-            "action" : "getUserDetails",
+            "action" : "getUser",
             "status" : "error",
             "message" : "Internal Server Error"
           };
@@ -116,15 +117,83 @@ router.get('/getUserSuggestions',(req,res) => {
         } else {
           let response = {
             "statusCode" : "200",
-            "action" : "getUserDetails",
+            "action" : "getUser",
             "status" : "success",
-            "user_id" : user._id,
+            "id" : user._id,
             "name" : user.name,
-            "address" : user.address
+            "address" : user.address,
+            "contact" : user.contact,
+            "email" : user.email,
+            "role" : user.role,
+            "username" : user.username
           };
           return res.status(200).json(response);
         }
       });
+    });
+
+    router.put('/editUser/:userId',(req,res) => {
+      console.log('------'+new Date()+'------ APMC - API invocation -editUser -- id : '+req.params.userId+'--');
+      console.log('Data received : ');
+      console.log('%j',req.body);
+      let newUserObj = new User({
+        "_id" : mongoose.Types.ObjectId(req.params.userId),
+        "name" : req.body.name,
+        "address" : req.body.address,
+        "contact" : req.body.contact,
+        "email" : req.body.email,
+        "role" : req.body.role,
+        "username" : req.body.username
+      });
+      User.updateUser(req.params.userId,newUserObj,(err,status) => {
+        if(err || !status) {
+          console.log('------'+new Date()+'------ APMC - API - editUser - Error Occured or update failed ------');
+          console.log(err);
+          response = {
+            "statusCode" : "500",
+            "action" : "editUser",
+            "status" : "fail",
+            "message" : "Update Failed. Please try later."
+          };
+          return res.status(500).json(response);
+        } else {
+          console.log('------'+new Date()+'------ APMC - Action - User updated ------------');
+          response = {
+            "statusCode" : "200",
+            "action" : "editUser",
+            "status" : "success",
+            "id" : req.params.id
+          };
+          res.status(200).json(response);
+        }
+      });
+    });
+
+    router.delete('/deleteUser', (req,res) => {
+      console.log('------'+new Date()+'------ APMC - API invocation - deleteUser ---');
+      console.log('Data received');
+      console.log(req.body);
+      let userIds = req.body.ids || req.body["ids[]"];
+      if(!(userIds instanceof Array)) {
+        userIds = [userIds];
+      }
+      if(userIds && userIds.length >= 1) {
+        for(var i = 0; i< userIds.length; i++) {
+            let id = userIds[i];
+            console.log('Removing user with id '+id);
+            User.removeUserById(id, (err,status) => {
+              if(err || !status) {
+                console.log('Delete failed due to : ('+err + '  ' + status+' )');
+              }
+            });
+        }
+        response = {
+          "statusCode" : "200",
+          "action" : "editUser",
+          "status" : "success"
+        };
+        return res.status(200).json(response);
+      }
     });
 
   module.exports = router;

@@ -21,5 +21,7 @@ $(document).ready(function() {
     }
   });
 
-
+  $('#successModal').on('hidden.bs.modal', function(event){
+		getAllUsers(1);
+	});
 });

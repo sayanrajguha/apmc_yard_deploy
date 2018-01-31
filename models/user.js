@@ -33,7 +33,7 @@ module.exports.getUserByEmail = function(email, callback) {
 }
 module.exports.getAllUsers = function(page,callback) {
   if(page && callback && page != -1) {
-    User.paginate({}, { page: page, limit: config.userPageLimit }, function(err, result) {
+    User.paginate({}, { sort : {_id : -1}, page: page, limit: config.userPageLimit }, function(err, result) {
       // result.docs
       // result.total
       // result.limit - 10
@@ -76,26 +76,24 @@ module.exports.comparePassword = function(userPassword, hash, callback) {
   })
 }
 
-module.exports.updateUser = function(username,newUser,callback) {
-  User.getUserByUsername(username, function(err,user) {
-    if(err) throw err;
-    if(!user) {
-      callback(null,false);
+module.exports.updateUser = function(id,newUser,callback) {
+  User.findOneAndUpdate({_id : id}, newUser, function(err,user) {
+    if(err) {
+      return callback(err,null);
+    } else if(!user) {
+      return callback(null,false);
     }
-    console.log('user with username : ' + username + ' found');
-    user.email = newUser.email;
-    user.firstName = newUser.firstName;
-    user.lastName = newUser.lastName;
-    user.dob = newUser.dob;
-    user.contact = newUser.contact;
-    user.socialMeta = newUser.socialMeta;
-
-    user.save(callback);
+    console.log('user with username : ' + user.username + ' found and updated');
+    return callback(null,true);
   });
 }
 
 module.exports.deleteUser = function(username,callback) {
   User.remove({ username: username },callback);
+}
+
+module.exports.removeUserById = function(id,callback) {
+  User.remove({ _id : id },callback);
 }
 
 module.exports.changePassword = function(username, newPassword, callback) {

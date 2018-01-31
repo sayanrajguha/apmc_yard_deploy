@@ -81,6 +81,49 @@ $(document).ready(function() {
 		}
 	});
 
+	$('#confirmDeleleUsers').click(function(event) {
+		event.preventDefault();
+		console.log('confirming delete users operation');
+		var userIds = [];
+		$('input:checkbox[name="options[]"]').each(function(index) {
+			if($(this).is(':checked')) {
+				userIds.push($(this).val());
+			}
+		});
+		if(userIds && userIds.length >= 1) {
+			$('#pleaseWaitDialog').modal('show');
+			$.ajax({
+	            type        : 'DELETE',
+	            // url         : 'http://localhost:3000/apmc/api/user/deleteUser',
+	            url         : 'https://apmc-yard.herokuapp.com/apmc/api/user/deleteUser',
+	            data        : {
+															"ids" : userIds
+														},
+	            dataType    : 'json',
+	            encode : false
+	        })
+	        .done(function(data) {
+						$('#pleaseWaitDialog').modal('hide');
+	            console.log(data);
+	            if(data && data.statusCode == '200' && data.status == 'success') {
+	              var successModal = $('#successModal');
+	              // $('#shopId').html(data.id);
+								// $('#addShopModal').modal('hide');
+								$('#deleteModal').modal('hide');
+								$('#successModal #action').html('deleted');
+								$('#successModal #textID').hide();
+								$('#successModal #textInfo').hide();
+								successModal.modal('show');
+	              // $('#registerForm')[0].reset();
+	              // $('#representative_ids').val();
+	              // $('#representative_ids').tokenfield('setTokens',[]);
+	            }
+	        });
+		} else {
+			$('#deleteModal').modal('hide');
+		}
+	});
+
   $('#addShopModal').on('click','#saveNewShopBtn',function(event) {
     event.preventDefault();
     var owner_id = $('#owner_id').val();
@@ -224,6 +267,125 @@ $(document).ready(function() {
 			});
 	});
 
+	$('#addUserModal').on('click','#saveNewUserBtn',function(event) {
+    event.preventDefault();
+    var owner_id = $('#owner_id').val();
+    var formData = {
+      'name':$('#user_name').val(),
+      'address':$('#address').val(),
+      'contact' : $('#contact').val(),
+      'email' : $('#email').val(),
+      'role' : $('#role').val(),
+			'username' : $('#username').val(),
+			'password' : $('#password').val()
+    };
+    console.log(formData);
+		$('#pleaseWaitDialog').modal('show');
+    $.ajax({
+            type        : 'POST',
+            // url         : 'http://localhost:3000/apmc/api/registerUser',
+            url         : 'https://apmc-yard.herokuapp.com/apmc/api/registerUser',
+            data        : formData,
+            dataType    : 'json',
+            encode : false
+        })
+        .done(function(data) {
+					$('#pleaseWaitDialog').modal('hide');
+            console.log(data);
+            if(data && data.statusCode == '200' && data.status == 'success') {
+              var successModal = $('#successModal');
+              $('#userId').html(data.username);
+							$('#addUserModal').modal('hide');
+							$('#successModal #action').html('saved');
+							$('#successModal #textID').show();
+							$('#successModal #textInfo').show();
+              successModal.modal('show');
+              $('#registerForm')[0].reset();
+            }
+        });
+  });
+
+	$('#addUserModal').on('click','#editNewUserBtn',function(event) {
+		console.log('edit user btn clicked');
+    event.preventDefault();
+
+    var formData = {
+      'name':$('#user_name').val(),
+      'address':$('#address').val(),
+      'contact' : $('#contact').val(),
+      'email' : $('#email').val(),
+      'role' : $('#role').val(),
+			'username' : $('#username').val()
+    };
+    console.log(formData);
+		$('#pleaseWaitDialog').modal('show');
+    $.ajax({
+            type        : 'PUT',
+            // url         : 'http://localhost:3000/apmc/api/user/editUser/'+$('#_id').val(),
+            url         : 'https://apmc-yard.herokuapp.com/apmc/api/user/editUser/'+$('#_id').val(),
+            data        : formData,
+            dataType    : 'json',
+            encode : false
+        })
+        .done(function(data) {
+					$('#pleaseWaitDialog').modal('hide');
+            console.log(data);
+            if(data && data.statusCode == '200' && data.status == 'success') {
+              var successModal = $('#successModal');
+              // $('#shopId').html(data.id);
+							$('#addUserModal').modal('hide');
+							$('#successModal #textID').hide();
+							$('#successModal #textInfo').hide();
+							$('#successModal #action').html('updated');
+              successModal.modal('show');
+              $('#registerForm')[0].reset();
+            }
+        });
+  });
+
+	$('#addUserModal').on('hidden.bs.modal', function(event){
+		$('#addUserModal #editNewUserBtn').attr('id','saveNewUserpBtn');
+		$('#addUserModal #passwordRow').show();
+	});
+
+	$('#addUserModal').on('click', '#showPassBtn', function(event){
+		console.log('show pass clicked');
+		$('#addUserModal #showPass').toggleClass('fa-eye-slash');
+		$('#addUserModal #showPass').toggleClass('fa-eye');
+		var passwordField = $('#addUserModal #password');
+		if(passwordField.attr('type') == 'text') {
+			passwordField.attr('type','password');
+		} else if(passwordField.attr('type') == 'password') {
+			passwordField.attr('type','text');
+		}
+
+	});
+
+	$('#usersTable').on('click','.editUser',function(event) {
+			event.preventDefault();
+			var userId=$(this).attr('id');
+			console.log('Edit user with id : '+userId);
+			$('#pleaseWaitDialog').modal('show');
+			// $.get("http://localhost:3000/apmc/api/user/getUser/"+userId, function(data){
+			$.get("https://apmc-yard.herokuapp.com/apmc/api/user/getUser/"+userId, function(data){
+				$('#pleaseWaitDialog').modal('hide');
+				console.log('data');
+				console.log(data);
+				if(data && data.statusCode =='200' && data.status == 'success') {
+					$('#addUserModal #_id').val(data.id);
+					$('#addUserModal #user_name').val(data.name);
+					$('#addUserModal #address').val(data.address);
+					$('#addUserModal #contact').val(data.contact);
+					$('#addUserModal #email').val(data.email);
+					$('#addUserModal #role').val(data.role);
+					$('#addUserModal #username').val(data.username);
+					$('#addUserModal #saveNewUserBtn').attr('id','editNewUserBtn');
+					$('#addUserModal #passwordRow').hide();
+					$('#addUserModal').modal('show');
+				}
+			});
+	});
+
 });
 
 //Global functions providing AJAX Calls
@@ -303,7 +465,7 @@ function getAllUsers(pageNo) {
 			console.log(users);
       var table = $('#usersTable tbody');
       for(var i=0;i<users.length;i++) {
-        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" class="tableCheckBox" id="checkbox'+(i+1)+'" name="options[]" value="'+ users[i].id +'"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td>'+ users[i].shopDetails +'</td><td><a href="javascript:void(0)" class="editUser" data-toggle="modal"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></td></tr>';
+        var row = '<tr><td><span class="custom-checkbox"><input type="checkbox" class="tableCheckBox" id="checkbox'+(i+1)+'" name="options[]" value="'+ users[i].id +'"><label for="checkbox'+(i+1)+'"></label></span></td><td>'+users[i].name+'</td><td>'+ users[i].address +'</td><td>'+ users[i].contact+'</td><td>'+ users[i].email +'</td><td>'+users[i].role+'</td><td>'+users[i].username+'</td><td>'+ users[i].shopDetails +'</td><td><a href="javascript:void(0)" id="'+users[i].id+'" class="editUser"><i class="material-icons" data-toggle="tooltip" title="Edit">&#xE254;</i></a></td></tr>';
         table.append(row);
       }
       $('#currPage_user a').html(data.page);
