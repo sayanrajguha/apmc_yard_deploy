@@ -122,6 +122,7 @@
                 <main role="main" class="col-sm-12 ml-sm-auto col-md-12 pt-3">
                     <form id="registerForm">
                       <input type="hidden" name="_id" id="_id">
+                      <p class="text-center" id="errorPanel" style="color:red;"></p>
                       <div class="form-group row">
                         <label for="name" class="col-lg-2 col-md-2 col-sm-6 col-xs-6 col-form-label">Name</label>
                         <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
@@ -155,7 +156,7 @@
                         <div class="form-group row" id="passwordRow">
                         <label for="password" class="col-lg-2 col-md-2 col-sm-6 col-xs-6  col-form-label">Password</label>
                         <div class="col-lg-10 col-md-10 col-sm-6 col-xs-6">
-                          <div class="input-group">
+                          <div class="input-group" id="pwdInputGroup">
                             <input class="form-control" type="password" id="password" name="password">
                             <div class="input-group-append">
                               <button class="btn" type="button" id="showPassBtn"><i class="fa fa-eye-slash"  id="showPass" aria-hidden="true"></i></button>
@@ -175,7 +176,7 @@
                         </div>
                         <div class="form-group row">
                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
-                            <button type="button" id="saveNewUserBtn" class="btn btn-primary form-control">Save changes</button>
+                            <button id="saveNewUserBtn" class="btn btn-primary form-control">Save changes</button>
                           </div>
                           <div class="col-lg-6 col-md-6 col-sm-6 col-xs-6">
                             <button type="button" class="btn btn-danger form-control" data-dismiss="modal">Close</button>
@@ -245,11 +246,14 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://code.jquery.com/jquery-3.2.1.min.js" integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
     <script src="js/jquery-ui.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/jquery.validate.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.17.0/additional-methods.min.js"></script>
     <script src="js/jquery-migrate-3.0.0.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
     <script src="js/bootstrap.min.js"></script>
     <script src="js/bootstrap-tokenfield.min.js"></script>
     <script src="js/scripts.js"></script>
     <script src="js/usersOnLoad.js"></script>
+    <script src="js/validator.js"></script>
   </body>
 </html>

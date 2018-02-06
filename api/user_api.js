@@ -19,14 +19,29 @@ router.get('/getUserSuggestions',(req,res) => {
       if(err || !users) {
         console.log('------'+new Date()+'------ APMC - Error - getUserSuggestions --------------');
         console.log(err);
-        return res.status(200).json([]);
+        response = {
+          "owners" : [],
+          "reps" : []
+        };
+        return res.status(200).json(response);
       } else {
-        let userList = [];
+        let ownerList = [];
+        let repList = [];
+        let userString = "";
         for(let i=0;i<users.length;i++) {
-          let userString= users[i].name+' - '+users[i].address+' - '+users[i]._id;
-          userList.push(userString);
+          if(users[i].role == 'owner') {
+            userString= users[i].name+' - '+users[i].address+' - '+users[i]._id;
+            ownerList.push(userString);
+          } else if(users[i].role == 'rep') {
+            userString= users[i].name+' - '+users[i].address+' - '+users[i]._id;
+            repList.push(userString);
+          }
         }
-        return res.status(200).json(userList);
+        response = {
+          "owners" : ownerList,
+          "reps" : repList
+        };
+        return res.status(200).json(response);
       }
     });
   });
